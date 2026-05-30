@@ -5,8 +5,8 @@ A full-stack dashboard that ingests advertising campaign data from a CSV and dis
 ## Tech Stack
 
 - **Backend:** Node.js, Express, TypeScript
-- **Frontend:** React, TypeScript, Vite
-- **Data:** CSV, parsed at runtime with `csv-parser`
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS
+- **Data:** CSV, parsed once at startup with `csv-parser` and cached in memory
 - **AI insights (Part 2):** OpenAI API
 
 ## Project Structure
@@ -53,7 +53,7 @@ npm install
 npm run dev
 ```
 
-Runs on http://localhost:5173 and talks to the backend API.
+Runs on http://localhost:5173. In development, Vite proxies `/api` requests to the backend on port 3000, so no CORS configuration is needed.
 
 ## Environment Variables
 
@@ -67,9 +67,10 @@ This file is gitignored and never committed.
 
 ## API Endpoints
 
+- `GET /api/health` — simple health check (`{ status: "ok" }`)
 - `GET /api/campaigns` — all campaigns with calculated ROAS and CPA
 - `GET /api/summary` — total spend, total revenue, and overall ROAS
-- `POST /api/insights` — AI-generated plain-English performance summary (Part 2)
+- `POST /api/insights` — AI-generated plain-English performance summary (Part 2, not yet implemented)
 
 ## Assessment Notes
 
