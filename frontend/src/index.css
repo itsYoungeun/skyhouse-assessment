@@ -1,7 +1,1 @@
 @import "tailwindcss";
-
-/* Custom yellow shade halfway between Tailwind's yellow-50 and yellow-100,
-   so `bg-yellow-75` (used for the medium-ROAS rows) is a real utility class. */
-@theme {
-  --color-yellow-75: oklch(98.0% 0.0485 102.703);
-}

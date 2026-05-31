@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { toCampaign, calculateMetrics, computeSummary } from './metrics';
-import { RawCampaign } from './types';
+import { RawCampaign } from '../types';
 
 // Build a valid raw row, overriding individual fields per test.
 function raw(overrides: Partial<RawCampaign> = {}): RawCampaign {

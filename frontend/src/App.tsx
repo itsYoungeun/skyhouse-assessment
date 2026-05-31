@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Campaign, Summary } from './types';
-import { fetchCampaigns, fetchSummary } from './api';
+import { fetchCampaigns, fetchSummary } from './lib/api';
 import { SummaryBar } from './components/SummaryBar';
+import { InsightsPanel } from './components/InsightsPanel';
 import { RoasFilter } from './components/RoasFilter';
 import { CampaignTable } from './components/CampaignTable';
 import { RevenueChart } from './components/RevenueChart';
@@ -76,6 +77,7 @@ function App() {
         {!loading && !error && summary && (
           <div className="space-y-6">
             <SummaryBar summary={summary} />
+            <InsightsPanel />
             <RoasFilter
               value={minRoas}
               onChange={setMinRoas}

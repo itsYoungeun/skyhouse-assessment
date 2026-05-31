@@ -57,20 +57,21 @@ Runs on http://localhost:5173. In development, Vite proxies `/api` requests to t
 
 ## Environment Variables
 
-The Campaign Insights feature (Part 2) calls the OpenAI API. Create a `.env` file in `backend/`:
+The Campaign Insights feature (Part 2) calls the OpenAI API. Copy `backend/.env.example` to `backend/.env` and fill in your key:
 
 ```
 OPENAI_API_KEY=your_key_here
+OPENAI_MODEL=gpt-4o-mini   # optional, defaults to gpt-4o-mini
 ```
 
-This file is gitignored and never committed.
+`.env` is gitignored and never committed; `.env.example` documents the variables.
 
 ## API Endpoints
 
 - `GET /api/health` — simple health check (`{ status: "ok" }`)
 - `GET /api/campaigns` — all campaigns with calculated ROAS and CPA
 - `GET /api/summary` — total spend, total revenue, and overall ROAS
-- `POST /api/insights` — AI-generated plain-English performance summary (Part 2, not yet implemented)
+- `POST /api/insights` — AI-generated plain-English performance summary (Part 2); cached, pass `?refresh=true` to regenerate
 
 ## Assessment Notes
 

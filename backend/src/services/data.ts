@@ -1,6 +1,6 @@
 import fs from 'fs';
 import csv from 'csv-parser';
-import { RawCampaign } from './types';
+import { RawCampaign } from '../types';
 
 // Strip a leading UTF-8 BOM (code point 0xFEFF) from a header so the first
 // column key is not corrupted when the CSV was saved with a BOM (common on

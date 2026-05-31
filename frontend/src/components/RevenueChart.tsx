@@ -1,5 +1,5 @@
 import type { Campaign } from '../types';
-import { formatCurrency } from '../format';
+import { formatCurrency } from '../lib/format';
 
 // Bonus: a simple bar chart of Revenue by Campaign, rendered with plain CSS
 // (bar width is proportional to the largest revenue in the current view).

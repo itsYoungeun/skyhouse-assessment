@@ -20,3 +20,12 @@ export interface ApiResponse<T> {
   data: T;
   error?: string;
 }
+
+// Metadata returned (via response headers) alongside a streamed insight.
+export interface InsightMeta {
+  index: number;
+  label: string;
+  total: number;
+  model: string;
+  cached: boolean;
+}

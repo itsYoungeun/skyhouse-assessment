@@ -1,5 +1,5 @@
 import type { Summary } from '../types';
-import { formatCurrency, formatRoas } from '../format';
+import { formatCurrency, formatRoas } from '../lib/format';
 
 export function SummaryBar({ summary }: { summary: Summary }) {
   const items = [

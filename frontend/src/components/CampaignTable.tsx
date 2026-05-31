@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { Campaign } from '../types';
-import { formatCurrency, formatCount, formatRoas, formatCpa } from '../format';
-import { ROAS_GREEN_MIN, ROAS_YELLOW_MIN } from '../constants';
+import { formatCurrency, formatCount, formatRoas, formatCpa } from '../lib/format';
+import { ROAS_GREEN_MIN, ROAS_YELLOW_MIN } from '../lib/constants';
 
 type SortDir = 'desc' | 'asc';
 // Only numeric columns are sortable.
@@ -11,7 +11,7 @@ type SortKey = 'spend' | 'revenue' | 'conversions' | 'roas' | 'cpa';
 function roasRowClass(roas: number | null): string {
   if (roas === null) return 'bg-white';
   if (roas >= ROAS_GREEN_MIN) return 'bg-green-50';
-  if (roas >= ROAS_YELLOW_MIN) return 'bg-yellow-75';
+  if (roas >= ROAS_YELLOW_MIN) return 'bg-yellow-50';
   return 'bg-red-50';
 }
 
@@ -70,13 +70,15 @@ export function CampaignTable({ campaigns, emptyMessage }: Props) {
         <button
           type="button"
           onClick={() => handleSort(key)}
-          className="inline-flex items-center gap-1 hover:text-gray-700"
+          className="inline-flex cursor-pointer items-center gap-1 hover:text-gray-700"
           title={`Sort by ${label}`}
         >
           <span>{label}</span>
           <span
             aria-hidden="true"
-            className={isActive ? 'text-gray-700' : 'text-gray-300'}
+            className={`-translate-y-px leading-none ${
+              isActive ? 'text-gray-700' : 'text-gray-500'
+            }`}
           >
             {indicator}
           </span>

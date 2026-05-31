@@ -1,4 +1,4 @@
-import { RawCampaign, Campaign, Summary } from './types';
+import { RawCampaign, Campaign, Summary } from '../types';
 
 // Parse a numeric CSV field. Returns null for missing/blank/non-numeric values
 // so callers can surface "N/A" rather than silently treating bad data as 0 or NaN.
