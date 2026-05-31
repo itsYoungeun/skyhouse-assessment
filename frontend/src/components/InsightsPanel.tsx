@@ -70,13 +70,13 @@ export function InsightsPanel() {
   const hasContent = text.length > 0 || label.length > 0;
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-border bg-surface p-4 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-semibold text-gray-900">
+          <h2 className="text-base font-semibold text-text-strong">
             AI Analysis
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-text-muted">
             An evaluation of what&apos;s working, what&apos;s underperforming, and where to reallocate budget.
           </p>
         </div>
@@ -84,14 +84,14 @@ export function InsightsPanel() {
           type="button"
           onClick={generate}
           disabled={loading}
-          className="shrink-0 cursor-pointer rounded-md border border-blue-200 bg-blue-50 px-3 pt-1 pb-2 text-sm font-medium text-blue-700 hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
+          className="shrink-0 cursor-pointer rounded-md border border-accent-border bg-accent-bg px-3 pt-1 pb-2 text-sm font-medium text-accent-strong hover:bg-accent-bg-hover disabled:cursor-not-allowed disabled:opacity-60"
         >
           Campaign Insights
         </button>
       </div>
 
       {error && (
-        <div className="mt-3 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+        <div className="mt-3 rounded-md border border-error-border bg-error-bg p-3 text-sm text-error-text">
           {error}
         </div>
       )}
@@ -99,11 +99,11 @@ export function InsightsPanel() {
       {!error && hasContent && (
         <div className="mt-3">
           {label && (
-            <span className="mb-2 inline-block rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+            <span className="mb-2 inline-block rounded-full bg-accent-bg px-2 py-0.5 text-xs font-medium text-accent-strong">
               {label}
             </span>
           )}
-          <p className="text-sm leading-relaxed text-gray-800">
+          <p className="text-sm leading-relaxed text-text-body">
             {text}
             {loading && <span className="animate-pulse">▍</span>}
           </p>

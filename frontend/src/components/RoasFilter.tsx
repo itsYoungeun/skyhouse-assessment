@@ -8,7 +8,7 @@ interface Props {
 export function RoasFilter({ value, onChange, matchCount, totalCount }: Props) {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <label htmlFor="minRoas" className="text-sm font-medium text-gray-700">
+      <label htmlFor="minRoas" className="text-sm font-medium text-text">
         Minimum ROAS
       </label>
       <input
@@ -19,18 +19,18 @@ export function RoasFilter({ value, onChange, matchCount, totalCount }: Props) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="e.g. 3.0"
-        className="w-32 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        className="w-32 rounded-md border border-border-input bg-surface px-3 py-1.5 text-sm text-text focus:border-accent-ring focus:ring-1 focus:ring-accent-ring focus:outline-none"
       />
       {value !== '' && (
         <button
           type="button"
           onClick={() => onChange('')}
-          className="text-sm text-blue-600 hover:underline"
+          className="text-sm text-accent hover:underline"
         >
           Clear
         </button>
       )}
-      <span className="text-sm text-gray-500">
+      <span className="text-sm text-text-muted">
         Showing {matchCount} of {totalCount} campaigns
       </span>
     </div>

@@ -13,10 +13,12 @@ export function SummaryBar({ summary }: { summary: Summary }) {
       {items.map((item) => (
         <div
           key={item.label}
-          className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+          className="rounded-lg border border-border bg-surface p-4 shadow-sm"
         >
-          <div className="text-sm font-medium text-gray-500">{item.label}</div>
-          <div className="mt-1 text-2xl font-semibold text-gray-900">
+          <div className="text-sm font-medium text-text-muted">
+            {item.label}
+          </div>
+          <div className="mt-1 text-2xl font-semibold text-text-strong">
             {item.value}
           </div>
         </div>

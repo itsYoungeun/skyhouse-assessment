@@ -9,10 +9,10 @@ type SortKey = 'spend' | 'revenue' | 'conversions' | 'roas' | 'cpa';
 
 // Row tint by ROAS: green >= 3.0, yellow 1.5-2.99, red < 1.5, neutral if N/A.
 function roasRowClass(roas: number | null): string {
-  if (roas === null) return 'bg-white';
-  if (roas >= ROAS_GREEN_MIN) return 'bg-green-50';
-  if (roas >= ROAS_YELLOW_MIN) return 'bg-yellow-50';
-  return 'bg-red-50';
+  if (roas === null) return 'bg-surface';
+  if (roas >= ROAS_GREEN_MIN) return 'bg-row-good';
+  if (roas >= ROAS_YELLOW_MIN) return 'bg-row-ok';
+  return 'bg-row-bad';
 }
 
 // Compare two nullable numbers, keeping null ("N/A") rows last in BOTH
@@ -70,14 +70,14 @@ export function CampaignTable({ campaigns, emptyMessage }: Props) {
         <button
           type="button"
           onClick={() => handleSort(key)}
-          className="inline-flex cursor-pointer items-center gap-1 hover:text-gray-700"
+          className="inline-flex cursor-pointer items-center gap-1 hover:text-text"
           title={`Sort by ${label}`}
         >
           <span>{label}</span>
           <span
             aria-hidden="true"
             className={`-translate-y-px leading-none ${
-              isActive ? 'text-gray-700' : 'text-gray-500'
+              isActive ? 'text-text' : 'text-text-muted'
             }`}
           >
             {indicator}
@@ -89,16 +89,16 @@ export function CampaignTable({ campaigns, emptyMessage }: Props) {
 
   if (campaigns.length === 0) {
     return (
-      <p className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-500">
+      <p className="rounded-lg border border-border bg-surface p-4 text-sm text-text-muted">
         {emptyMessage}
       </p>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
-      <table className="min-w-full divide-y divide-gray-200 text-sm">
-        <thead className="bg-white text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="min-w-full divide-y divide-border text-sm">
+        <thead className="bg-surface text-left text-xs font-semibold tracking-wide text-text-muted uppercase">
           <tr>
             <th className="px-4 py-3">Campaign</th>
             <th className="px-4 py-3">Platform</th>
@@ -109,26 +109,26 @@ export function CampaignTable({ campaigns, emptyMessage }: Props) {
             {renderSortHeader('CPA', 'cpa')}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-hairline">
           {sorted.map((c) => (
             <tr key={c.campaign_id} className={roasRowClass(c.roas)}>
-              <td className="px-4 py-3 font-medium text-gray-900">
+              <td className="px-4 py-3 font-medium text-text-strong">
                 {c.campaign_name}
               </td>
-              <td className="px-4 py-3 text-gray-600">{c.platform}</td>
-              <td className="px-4 py-3 text-right text-gray-700 tabular-nums">
+              <td className="px-4 py-3 text-text-soft">{c.platform}</td>
+              <td className="px-4 py-3 text-right text-text tabular-nums">
                 {formatCurrency(c.spend)}
               </td>
-              <td className="px-4 py-3 text-right text-gray-700 tabular-nums">
+              <td className="px-4 py-3 text-right text-text tabular-nums">
                 {formatCurrency(c.revenue)}
               </td>
-              <td className="px-4 py-3 text-right text-gray-700 tabular-nums">
+              <td className="px-4 py-3 text-right text-text tabular-nums">
                 {formatCount(c.conversions)}
               </td>
-              <td className="px-4 py-3 text-right font-semibold text-gray-900 tabular-nums">
+              <td className="px-4 py-3 text-right font-semibold text-text-strong tabular-nums">
                 {formatRoas(c.roas)}
               </td>
-              <td className="px-4 py-3 text-right text-gray-700 tabular-nums">
+              <td className="px-4 py-3 text-right text-text tabular-nums">
                 {formatCpa(c.cpa)}
               </td>
             </tr>

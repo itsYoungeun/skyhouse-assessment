@@ -1,0 +1,86 @@
+/* ============================================================================
+   Semantic color tokens — the single source of truth for theming.
+
+   Each token's LIGHT value mirrors the original palette exactly (by pointing at
+   the same Tailwind color), so light mode is unchanged. The `.dark` block below
+   re-skins the same tokens. Components reference these tokens only
+   (e.g. bg-surface, text-text-strong, border-border) and never raw grays, so
+   adding/adjusting a theme happens here and nowhere else.
+   ============================================================================ */
+@theme {
+  /* Structure */
+  --color-page: var(--color-gray-50);
+  --color-surface: var(--color-white);
+  --color-border: var(--color-gray-200);
+  --color-border-input: var(--color-gray-300);
+  --color-hairline: var(--color-gray-100);
+
+  /* Text */
+  --color-text-strong: var(--color-gray-900);
+  --color-text-body: var(--color-gray-800);
+  --color-text: var(--color-gray-700);
+  --color-text-soft: var(--color-gray-600);
+  --color-text-muted: var(--color-gray-500);
+  --color-text-faint: var(--color-gray-400);
+
+  /* Accent (blue) */
+  --color-accent: var(--color-blue-600);
+  --color-accent-strong: var(--color-blue-700);
+  --color-accent-bg: var(--color-blue-50);
+  --color-accent-bg-hover: var(--color-blue-100);
+  --color-accent-border: var(--color-blue-200);
+  --color-accent-ring: var(--color-blue-500);
+  --color-bar: var(--color-blue-300);
+
+  /* ROAS row tints */
+  /* "75" = the midpoint between the -50 and -100 shades (no native Tailwind step). */
+  --color-row-good: color-mix(in oklab, var(--color-green-50) 50%, var(--color-green-100));
+  --color-row-ok: color-mix(in oklab, var(--color-yellow-50) 50%, var(--color-yellow-100));
+  --color-row-bad: var(--color-red-50);
+
+  /* Error / alert */
+  --color-error-bg: var(--color-red-50);
+  --color-error-border: var(--color-red-200);
+  --color-error-text: var(--color-red-700);
+  --color-error-text-soft: var(--color-red-600);
+}
+
+/* Dark theme — initial values, tweak from here. */
+.dark {
+  /* Structure */
+  --color-page: var(--color-gray-950);
+  --color-surface: var(--color-gray-900);
+  --color-border: var(--color-gray-800);
+  --color-border-input: var(--color-gray-700);
+  --color-hairline: var(--color-gray-800);
+
+  /* Text */
+  --color-text-strong: var(--color-gray-50);
+  --color-text-body: var(--color-gray-100);
+  --color-text: var(--color-gray-200);
+  --color-text-soft: var(--color-gray-300);
+  --color-text-muted: var(--color-gray-400);
+  --color-text-faint: var(--color-gray-500);
+
+  /* Accent (blue) */
+  --color-accent: var(--color-blue-400);
+  --color-accent-strong: var(--color-blue-300);
+  --color-accent-bg: var(--color-blue-950);
+  --color-accent-bg-hover: var(--color-blue-900);
+  --color-accent-border: var(--color-blue-800);
+  --color-accent-ring: var(--color-blue-500);
+  --color-bar: var(--color-blue-500);
+
+  /* ROAS row tints */
+  /* Tint the dark surface with the vivid hues so rows read clearly as
+     green / yellow / red instead of muddy olive/brown at the -950 shades. */
+  --color-row-good: color-mix(in oklab, var(--color-green-500) 22%, var(--color-surface));
+  --color-row-ok: color-mix(in oklab, var(--color-yellow-300) 55%, var(--color-surface));
+  --color-row-bad: color-mix(in oklab, var(--color-red-500) 22%, var(--color-surface));
+
+  /* Error / alert */
+  --color-error-bg: var(--color-red-950);
+  --color-error-border: var(--color-red-900);
+  --color-error-text: var(--color-red-300);
+  --color-error-text-soft: var(--color-red-400);
+}

@@ -10,8 +10,8 @@ export function RevenueChart({ campaigns }: { campaigns: Campaign[] }) {
   const maxRevenue = Math.max(0, ...campaigns.map((c) => c.revenue ?? 0));
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <h2 className="mb-4 text-base font-semibold text-gray-900">
+    <div className="rounded-lg border border-border bg-surface p-4 shadow-sm">
+      <h2 className="mb-4 text-base font-semibold text-text-strong">
         Revenue by Campaign
       </h2>
       <div className="space-y-3">
@@ -22,13 +22,13 @@ export function RevenueChart({ campaigns }: { campaigns: Campaign[] }) {
               : 0;
           return (
             <div key={c.campaign_id}>
-              <div className="mb-1 flex justify-between text-xs text-gray-600">
+              <div className="mb-1 flex justify-between text-xs text-text-soft">
                 <span className="truncate pr-2">{c.campaign_name}</span>
                 <span className="tabular-nums">{formatCurrency(c.revenue)}</span>
               </div>
-              <div className="h-3 w-full rounded bg-gray-100">
+              <div className="h-3 w-full rounded bg-hairline">
                 <div
-                  className="h-3 rounded bg-blue-300"
+                  className="h-3 rounded bg-bar"
                   style={{ width: `${pct}%` }}
                 />
               </div>

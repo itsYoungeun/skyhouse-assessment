@@ -6,6 +6,7 @@ import { InsightsPanel } from './components/InsightsPanel';
 import { RoasFilter } from './components/RoasFilter';
 import { CampaignTable } from './components/CampaignTable';
 import { RevenueChart } from './components/RevenueChart';
+import { ThemeToggle } from './theme/ThemeToggle';
 
 function App() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -50,25 +51,30 @@ function App() {
       : 'No campaigns match the current filter.';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-page text-text">
+      {/* Floating control, pinned to the viewport corner so it stays out of the
+          dashboard's own layout/alignment. */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
       <div className="mx-auto max-w-6xl px-4 py-8">
         <header className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-text-strong">
             Campaign Performance Dashboard
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-text-muted">
             ROAS and CPA across all advertising campaigns.
           </p>
         </header>
 
         {loading && (
-          <p className="text-sm text-gray-500">Loading campaigns…</p>
+          <p className="text-sm text-text-muted">Loading campaigns…</p>
         )}
 
         {error && !loading && (
-          <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="rounded-md border border-error-border bg-error-bg p-4 text-sm text-error-text">
             <p>Could not load data: {error}</p>
-            <p className="mt-1 text-red-600">
+            <p className="mt-1 text-error-text-soft">
               Is the backend running on port 3000?
             </p>
           </div>
