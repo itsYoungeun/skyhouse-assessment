@@ -1,4 +1,10 @@
-import type { ApiResponse, Campaign, Summary, InsightMeta } from '../types';
+import type {
+  ApiResponse,
+  Campaign,
+  Summary,
+  InsightMeta,
+  Dataset,
+} from '../types';
 
 // Send a request to an endpoint that returns the { success, data, error } envelope.
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
@@ -33,6 +39,20 @@ export function fetchCampaigns(): Promise<Campaign[]> {
 
 export function fetchSummary(): Promise<Summary> {
   return request<Summary>('/api/summary');
+}
+
+// Upload a CSV (raw text) to replace the active dataset; returns the new data.
+export function uploadCampaignsCsv(csvText: string): Promise<Dataset> {
+  return request<Dataset>('/api/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/csv' },
+    body: csvText,
+  });
+}
+
+// Restore the original sample dataset.
+export function resetCampaigns(): Promise<Dataset> {
+  return request<Dataset>('/api/reset', { method: 'POST' });
 }
 
 // Stream an insight for the given angle, calling onToken as text arrives.

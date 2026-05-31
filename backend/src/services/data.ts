@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { Readable } from 'stream';
 import csv from 'csv-parser';
 import { RawCampaign } from '../types';
 
@@ -9,14 +10,24 @@ function stripBom(header: string): string {
   return header.charCodeAt(0) === 0xfeff ? header.slice(1) : header;
 }
 
-// Read and parse a CSV file into raw rows. Rejects on any stream/read error.
-export function readCampaignCsv(filePath: string): Promise<RawCampaign[]> {
+// Collect parsed rows from any CSV byte/text stream. Rejects on stream error.
+function collectRows(source: NodeJS.ReadableStream): Promise<RawCampaign[]> {
   return new Promise((resolve, reject) => {
     const rows: RawCampaign[] = [];
-    fs.createReadStream(filePath)
+    source
       .pipe(csv({ mapHeaders: ({ header }) => stripBom(header) }))
       .on('data', (row: RawCampaign) => rows.push(row))
       .on('end', () => resolve(rows))
       .on('error', reject);
   });
+}
+
+// Read and parse a CSV file from disk (used to load the sample data at startup).
+export function readCampaignCsv(filePath: string): Promise<RawCampaign[]> {
+  return collectRows(fs.createReadStream(filePath));
+}
+
+// Parse CSV supplied as a string (used for user uploads).
+export function parseCampaignCsv(text: string): Promise<RawCampaign[]> {
+  return collectRows(Readable.from(text));
 }

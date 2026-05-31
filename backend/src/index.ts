@@ -6,7 +6,7 @@ import express, {
 } from 'express';
 import cors from 'cors';
 import path from 'path';
-import { readCampaignCsv } from './services/data';
+import { readCampaignCsv, parseCampaignCsv } from './services/data';
 import { calculateMetrics, computeSummary } from './services/metrics';
 import {
   createInsightStream,
@@ -15,7 +15,7 @@ import {
   INSIGHT_ANGLES,
   normalizeAngleIndex,
 } from './services/insights';
-import { Campaign, Summary } from './types';
+import { Campaign, Summary, RawCampaign } from './types';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -36,15 +36,45 @@ app.use(
   }),
 );
 app.use(express.json());
+// Uploaded CSVs arrive as a plain-text body.
+app.use(express.text({ type: ['text/csv', 'text/plain'], limit: '2mb' }));
 
-// Campaign data is static, so the rows and their aggregate summary are computed
-// once at startup and cached in memory rather than recomputed per request.
+// The active dataset (sample at startup, or whatever was last uploaded) and its
+// aggregate summary, computed once and cached rather than recomputed per request.
 let campaigns: Campaign[] = [];
 let summary: Summary = { totalSpend: 0, totalRevenue: 0, overallRoas: null };
 
-// Each angle's generated text is cached (keyed by angle) since the data is
-// static, so cycling back to a previously seen take is free and instant.
+// The original sample dataset, kept so the user can reset back to it.
+let sampleCampaigns: Campaign[] = [];
+let sampleSummary: Summary = { totalSpend: 0, totalRevenue: 0, overallRoas: null };
+
+// Generated insight text, keyed by angle. Cleared whenever the dataset changes
+// so insights always reflect the data currently shown.
 const insightCache = new Map<string, string>();
+
+// Columns an uploaded CSV must contain to be usable.
+const REQUIRED_COLUMNS = [
+  'campaign_id',
+  'campaign_name',
+  'spend',
+  'revenue',
+  'conversions',
+  'platform',
+];
+
+// Recompute and cache campaigns + summary from raw rows; reset insights.
+function applyDataset(rows: RawCampaign[]): void {
+  campaigns = calculateMetrics(rows);
+  summary = computeSummary(campaigns);
+  insightCache.clear();
+}
+
+// Which required columns are absent from the parsed rows (all, if no rows).
+function missingColumns(rows: RawCampaign[]): string[] {
+  if (rows.length === 0) return [...REQUIRED_COLUMNS];
+  const keys = Object.keys(rows[0]);
+  return REQUIRED_COLUMNS.filter((column) => !keys.includes(column));
+}
 
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
@@ -58,6 +88,45 @@ app.get('/api/campaigns', (_req: Request, res: Response) => {
 // Aggregate totals: total spend, total revenue, overall ROAS.
 app.get('/api/summary', (_req: Request, res: Response) => {
   res.json({ success: true, data: summary });
+});
+
+// Replace the active dataset with an uploaded CSV (sent as a text/csv body).
+// Validates the columns and returns the new campaigns + summary.
+app.post('/api/upload', async (req: Request, res: Response) => {
+  const csvText = typeof req.body === 'string' ? req.body : '';
+  if (csvText.trim() === '') {
+    res
+      .status(400)
+      .json({ success: false, error: 'No CSV content was uploaded.' });
+    return;
+  }
+
+  try {
+    const rows = await parseCampaignCsv(csvText);
+    const missing = missingColumns(rows);
+    if (missing.length > 0) {
+      res.status(400).json({
+        success: false,
+        error: `CSV is missing required column(s): ${missing.join(', ')}.`,
+      });
+      return;
+    }
+    applyDataset(rows);
+    res.json({ success: true, data: { campaigns, summary } });
+  } catch {
+    res.status(400).json({
+      success: false,
+      error: 'Could not parse the uploaded file as CSV.',
+    });
+  }
+});
+
+// Restore the original sample dataset.
+app.post('/api/reset', (_req: Request, res: Response) => {
+  campaigns = sampleCampaigns;
+  summary = sampleSummary;
+  insightCache.clear();
+  res.json({ success: true, data: { campaigns, summary } });
 });
 
 // AI-generated insight, streamed token-by-token so the UI can type it out.
@@ -119,8 +188,10 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 async function start(): Promise<void> {
   try {
     const rows = await readCampaignCsv(CSV_PATH);
-    campaigns = calculateMetrics(rows);
-    summary = computeSummary(campaigns);
+    applyDataset(rows);
+    // Remember the sample so it can be restored via /api/reset.
+    sampleCampaigns = campaigns;
+    sampleSummary = summary;
     app.listen(PORT, () => {
       console.log(`Campaign API running on http://localhost:${PORT}`);
     });

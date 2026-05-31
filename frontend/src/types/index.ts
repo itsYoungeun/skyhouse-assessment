@@ -21,6 +21,12 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
+// Returned by the upload + reset endpoints: the now-active dataset.
+export interface Dataset {
+  campaigns: Campaign[];
+  summary: Summary;
+}
+
 // Metadata returned (via response headers) alongside a streamed insight.
 export interface InsightMeta {
   index: number;

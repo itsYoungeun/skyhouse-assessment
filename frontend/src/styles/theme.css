@@ -36,7 +36,7 @@
   /* "75" = the midpoint between the -50 and -100 shades (no native Tailwind step). */
   --color-row-good: color-mix(in oklab, var(--color-green-50) 50%, var(--color-green-100));
   --color-row-ok: color-mix(in oklab, var(--color-yellow-50) 50%, var(--color-yellow-100));
-  --color-row-bad: var(--color-red-50);
+  --color-row-bad: var(--color-red-100);
 
   /* Error / alert */
   --color-error-bg: var(--color-red-50);
