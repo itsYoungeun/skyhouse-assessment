@@ -2,6 +2,8 @@
 
 A full stack dashboard that reads advertising campaign data from a CSV and shows key metrics like ROAS and CPA. You can sort and filter the table, see rows color coded by performance, get an AI written summary of the data, switch between light and dark mode, and upload your own CSV to view different data.
 
+![Campaign Performance Dashboard](docs/dashboard.png)
+
 ## Tech Stack
 
 - **Backend:** Node.js, Express, TypeScript
@@ -97,4 +99,4 @@ OPENAI_MODEL=gpt-4o-mini   # optional, defaults to gpt-4o-mini
 
 ## Assessment Notes
 
-This repository covers Parts 1 and 2, the dashboard and the OpenAI integration. The light and dark mode and the CSV upload are extra features beyond the required scope. The written responses for Part 3 (Bug Hunt) and Part 4 (System Design) are in the document submitted alongside this repo.
+This repository covers Parts 1 and 2, the dashboard and the OpenAI integration. The light and dark mode and the CSV upload are extra features beyond the required scope. The corrected Part 3 bug hunt file lives in the `part3` folder. The written explanations for Part 3 (Bug Hunt) and Part 4 (System Design) are in the document submitted alongside this repo.
