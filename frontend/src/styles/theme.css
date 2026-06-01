@@ -72,11 +72,12 @@
   --color-bar: var(--color-blue-500);
 
   /* ROAS row tints */
-  /* Tint the dark surface with the vivid hues so rows read clearly as
-     green / yellow / red instead of muddy olive/brown at the -950 shades. */
-  --color-row-good: color-mix(in oklab, var(--color-green-500) 22%, var(--color-surface));
-  --color-row-ok: color-mix(in oklab, var(--color-yellow-300) 55%, var(--color-surface));
-  --color-row-bad: color-mix(in oklab, var(--color-red-500) 22%, var(--color-surface));
+  /* Semi-transparent hue over the dark background, so the rows read as
+     green / yellow / red but you can see through them. The percentage is
+     the opacity: lower = more see-through and less saturated. */
+  --color-row-good: color-mix(in oklab, var(--color-green-500) 28%, transparent);
+  --color-row-ok: color-mix(in oklab, var(--color-yellow-400) 38%, transparent);
+  --color-row-bad: color-mix(in oklab, var(--color-red-500) 25%, transparent);
 
   /* Error / alert */
   --color-error-bg: var(--color-red-950);

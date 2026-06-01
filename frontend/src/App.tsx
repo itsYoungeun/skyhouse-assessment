@@ -79,6 +79,9 @@ function App() {
     setSummary(data.summary);
     setMinRoas('');
     setDatasetVersion((v) => v + 1);
+    // Return to the top so the revenue chart's fill animation replays as the
+    // user scrolls back down to it.
+    window.scrollTo({ top: 0 });
   }
 
   async function handleUpload(csvText: string) {
@@ -169,7 +172,7 @@ function App() {
         {!loading && !error && summary && (
           <div className="space-y-6">
             <SummaryBar summary={summary} />
-            <InsightsPanel key={datasetVersion} />
+            <InsightsPanel key={`insights-${datasetVersion}`} />
             <RoasFilter
               value={minRoas}
               onChange={setMinRoas}
@@ -177,7 +180,7 @@ function App() {
               totalCount={campaigns.length}
             />
             <CampaignTable campaigns={filtered} emptyMessage={emptyMessage} />
-            <RevenueChart campaigns={filtered} />
+            <RevenueChart key={`chart-${datasetVersion}`} campaigns={filtered} />
           </div>
         )}
       </div>
